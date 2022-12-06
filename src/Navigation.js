@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { NavigationContainer } from '@react-navigation/native'
 
 import Register from './Screens/Register';
+import AddTransaction from './Screens/AddTransaction';
 import Login from './Screens/Login';
 import Home from './Screens/Home';
 
