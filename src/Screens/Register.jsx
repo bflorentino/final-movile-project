@@ -4,8 +4,15 @@ import { loadImageFromGallery } from '../helpers/loadImage';
 import { Avatar } from 'react-native-paper' 
 import { useForm } from '../hooks/useForm';
 import { addImage, addLeftDataFromUser, registerUser } from '../firebase/Firebase-auth';
+import { useNavigation } from '@react-navigation/native';
+import { authContext } from '../../Context/authContext';
+import { useContext } from 'react';
+import { types } from '../../Context/authReducer';
 
 const Register = () => {
+
+    const navigation = useNavigation();
+    const {dispatch} = useContext(authContext);
 
     const [ formValues, handleInputChanges ] = useForm({
         name:"",
@@ -32,15 +39,18 @@ const Register = () => {
 
         console.log(imageSelected)
 
-        const imageToUpload = imageSelected.uri || null
+        const imageToUpload = imageSelected?.uri || null
 
         addImage(imageToUpload, 'profilePics')
         .then(url => {
-            registerUser(`${formValues.nombre} ${formValues.apellido}`, formValues.email, formValues.password, url)
+            registerUser(`${formValues.name} ${formValues.lastName}`, formValues.email, formValues.password, url)
+
             .then(data => {
+                dispatch({type: types.LOGIN , payload: {...data}})
                 addLeftDataFromUser({...formValues, url})
                 .then(res => {
                     Alert.alert("Se ha registrado exitosamente")
+                    navigation.navigate("Home")
                 })
             })
         })
