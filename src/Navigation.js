@@ -3,17 +3,20 @@ import { NavigationContainer } from '@react-navigation/native'
 
 import Register from './Screens/Register';
 import AddTransaction from './Screens/AddTransaction';
+import Login from './Screens/Login';
+import Home from './Screens/Home';
 
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
     return(
-           <NavigationContainer>
+        <NavigationContainer>
            <Tab.Navigator>
-               <Tab.Screen name="Home" component={Register} />
-               <Tab.Screen name="New"  component={AddTransaction} />
+               <Tab.Screen name="Login" component={Login} />
+               <Tab.Screen name="Registro" component={Register} />
+               <Tab.Screen name="Home" component={Home} />
            </Tab.Navigator>
-         </NavigationContainer>
+        </NavigationContainer>
     )
 }
 

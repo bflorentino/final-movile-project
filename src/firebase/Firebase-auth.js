@@ -1,5 +1,5 @@
 import {createUserWithEmailAndPassword,
-        updateProfile
+        updateProfile, signInWithEmailAndPassword
     } from 'firebase/auth'
 
 import { auth, db, storage } from './Firebase.config'
@@ -29,7 +29,8 @@ export const registerUser = async(userName, email, password, picUrl) => {
      return (
       {
          uid: user.uid,
-         nombre: user.displayName,
+         user: user.displayName,
+         email,
          photoURL: user.photoURL
       }
      )
@@ -70,4 +71,23 @@ export const addImage = async(image, path) =>{
         }
     }
     return url
+}
+
+export const login = async (email, password) => {
+    try{
+        const { user } = await signInWithEmailAndPassword(auth, email, password)
+
+        console.log(user)
+
+        return ({
+            uid: user.uid,
+            user: user.displayName,
+            email,
+            photoURL: user.photoURL
+        })
+    }
+    catch(e){
+        console.log(e);
+        return false;
+    }
 }
