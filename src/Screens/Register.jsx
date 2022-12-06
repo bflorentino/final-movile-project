@@ -49,7 +49,7 @@ const Register = () => {
     return (
     <View style={styles.form}>
         <Text style={styles.title}>
-            Datos de la Cuenta
+            Nueva Cuenta
         </Text>
       <TextInput 
         placeholder='Nombre'
