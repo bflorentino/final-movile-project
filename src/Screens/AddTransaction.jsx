@@ -40,6 +40,7 @@ const AddTransaction = () => {
         getActiveLoans(auth.email)
         .then(data => {
             setActiveLoans([...data])
+            console.log(data)
         })
         .catch(e => {
             console.log(e)

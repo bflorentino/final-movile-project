@@ -70,12 +70,15 @@ const Register = () => {
                     navigation.navigate("ViewTransactions")
                 }).catch(e => {
                     console.log(e)
+                    Alert.alert(e)
                 })
             }).catch(e => {
                 console.log(e)
+                Alert.alert(e)
             })
         }).catch(e => {
             console.log(e)
+            Alert.alert(e)
         })
     }
 

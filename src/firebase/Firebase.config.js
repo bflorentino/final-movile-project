@@ -24,9 +24,9 @@ let db;
 
 
 if (Platform.OS === "android") {
-  connectAuthEmulator(auth, "http://10.0.0.2:9090");
+  connectAuthEmulator(auth, "http://10.0.0.8:9090");
   db =  initializeFirestore(app, {experimentalForceLongPolling: true});
-  connectFirestoreEmulator(db, "10.0.2.2", 8080);
+  connectFirestoreEmulator(db, "10.0.0.8", 8080);
 } else {
   db = getFirestore(app)
 }

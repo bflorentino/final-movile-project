@@ -6,7 +6,7 @@ import { authentication} from './Context/authReducer';
 import {  View, Text } from 'react-native';
 
 import { StatusBar } from 'expo-status-bar';
-import ProfileBar from './src/Components/profileBar';
+import ProfileBar from './src/Components/ProfileBar'
 
 export default function App() {
 
