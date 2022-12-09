@@ -5,6 +5,7 @@ import Register from './Screens/Register';
 import AddTransaction from './Screens/AddTransaction';
 import Login from './Screens/Login';
 import Home from './Screens/Home';
+import ViewTransactions from './Screens/ViewTransactions';
 
 const Tab = createBottomTabNavigator();
 
@@ -16,6 +17,7 @@ const Tabs = () => {
                <Tab.Screen name="Registro" component={Register} />
                <Tab.Screen name="Home" component={Home} />
                <Tab.Screen name="Transaction" component={AddTransaction} />
+               <Tab.Screen name="ViewTransactions" component={ViewTransactions} />
            </Tab.Navigator>
         </NavigationContainer>
     )

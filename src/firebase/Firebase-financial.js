@@ -76,3 +76,25 @@ export const getActiveLoans = async (email) => {
 
     return snapshot
 }
+
+export const getExpenses = async (email) => {
+
+    const q = query(collection(db, "Gastos"), where("email", "==", email))
+    const { docs } = await getDocs(q)
+    const snapshot = docs.map(doc => ({...doc.data(), id:doc.id}))
+
+    console.log(snapshot)
+
+    return snapshot
+}
+
+export const getIncomes = async (email) => {
+
+    const q = query(collection(db, "Ingresos"), where("email", "==", email))
+    const { docs } = await getDocs(q)
+    const snapshot = docs.map(doc => ({...doc.data(), id:doc.id}))
+
+    console.log(snapshot)
+
+    return snapshot
+}
