@@ -25,11 +25,13 @@ const Login = () => {
       if(data !== false){
         Alert.alert("Bienvenido")
         dispatch({type: types.LOGIN , payload: {...data}})
-        navigation.navigate("ViewTransaction")
+        navigation.navigate("ViewTransactions")
+      }
+      else{
+        Alert.alert("Tus credenciales no son correctas, verifica el correo y contraseña")
       }
     }).catch(e => {
       console.log(e)
-      Alert.alert(e)
   })
   }
 

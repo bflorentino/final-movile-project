@@ -35,9 +35,26 @@ const Register = () => {
     }
 
     const onSubmitData = () => {
-        console.log(formValues)
 
-        console.log(imageSelected)
+        if(formValues.name === ""){
+            Alert.alert("Agregue Su nombre")
+            return
+        }
+
+        if(formValues.lastName === ""){
+            Alert.alert("Agregue su apellido")
+            return
+        }
+
+        if(formValues.email === ""){
+            Alert.alert("Correo Invalido")
+            return
+        }
+
+        if(formValues.password.length < 5){
+            Alert.alert("La contraseña debe tener al menos 5 caracteres")
+            return
+        }
 
         const imageToUpload = imageSelected?.uri || null
 
@@ -50,7 +67,7 @@ const Register = () => {
                 addLeftDataFromUser({...formValues, url})
                 .then(res => {
                     Alert.alert("Se ha registrado exitosamente")
-                    navigation.navigate("ViewTransaction")
+                    navigation.navigate("ViewTransactions")
                 }).catch(e => {
                     console.log(e)
                 })

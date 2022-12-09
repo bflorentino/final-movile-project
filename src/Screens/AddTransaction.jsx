@@ -1,13 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TextInput, StyleSheet, Text, View, Modal } from 'react-native'
+import { TextInput, StyleSheet, Text, View, Modal, Alert } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { RadioButton } from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
 import { useForm } from '../hooks/useForm';
 import { addFinancialTransaction, getActiveLoans } from '../firebase/Firebase-financial';
 import { authContext } from '../../Context/authContext';
+import { useNavigation } from '@react-navigation/native';
+
+const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
+
+const dias = new Array(31).fill(1).map((day, i) => i)
 
 const AddTransaction = () => {
+
+    const history = useNavigation()
 
     const { auth } = useContext(authContext)
 
@@ -16,10 +23,11 @@ const AddTransaction = () => {
     const [ formValues, handleInputChanges ] = useForm(
         {
             descripcion: "",
-            monto: 0,
+            monto: "",
             fecha: new Date().toLocaleString(),
-            mes:   new Date().getMonth() + 1,
+            mes:   new Date().getMonth(),
             anio:  new Date().getFullYear(),
+            dia:   new Date().getDate(),
             tipo: "Gasto",
             tipo_gasto: 1,
             tipo_ingreso: 1,
@@ -41,14 +49,39 @@ const AddTransaction = () => {
     const onSubmitData = () => {
 
         const loan = (formValues.tipo === "Gasto" && formValues.tipo_gasto === 3) || (formValues.tipo === "Ingreso" && formValues.tipo_ingreso === 2)
-        const LoanPayment = formValues.tipo_gasto === 4 || formValues.tipo_ingreso === 3
+        const loanPayment = formValues.tipo_gasto === 4 || formValues.tipo_ingreso === 3
 
-        addFinancialTransaction(formValues, auth.email, loan, LoanPayment )
+        if(formValues.descripcion === ""){
+            Alert.alert("Agregue una descripcion")
+            return
+        }
+
+        try{
+            parseFloat(formValues.monto)
+        }catch(e){
+            Alert.alert("Agreue un valor valido al monto")
+            return
+        }
+
+        if(loan && formValues.persona === ""){
+            Alert.alert("Agregue una descripcion")
+            return
+        }
+
+        if(loanPayment && formValues.prestador === ""){
+            Alert.alert("Seleccione un préstamo")
+            return
+        }
+
+        addFinancialTransaction(formValues, auth.email, loan, loanPayment )
          .then(res => {
              console.log(res)
-         })
-         .catch(e => {
-             console.log(e)
+             history.navigate("ViewTransactions")
+             Alert.alert("Su transacción se ha registrado correctamente")
+            })
+            .catch(e => {
+                console.log(e)
+                Alert.alert("Hubo un error al registrar la transacción")
          })
     }
 
@@ -73,22 +106,63 @@ const AddTransaction = () => {
                 keyboardType='number-pad'
             />
 
-            <View style={{display:'flex', flexDirection:'row' }}>
-                <RadioButton
-                    value="Gasto"
-                    status={formValues.tipo === "Gasto" ? 'checked' : 'unchecked'}
-                    onPress={() => handleInputChanges("tipo", "Gasto")}
-                    />
-                <Text > Gasto </Text>
-            </View>
+            <View style={{display:'flex', flexDirection:'row'}}>
 
-            <View style={{display:'flex', flexDirection:'row' }}>
-                <RadioButton
-                    value="Ingreso"
-                    status={formValues.tipo === "Ingreso" ? 'checked' : 'unchecked'}
-                    onPress={() => handleInputChanges("tipo", "Ingreso")}
-                    />
-                <Text > Ingreso </Text>
+            <Picker
+                selectedValue={formValues.dia}
+                style={styles.pickerStyle}
+                onValueChange={(itemValue)=> handleInputChanges("dia", parseInt(itemValue)) }
+            >
+          {
+              dias.map((d, i) => (
+                  <Picker.Item key={d} label={d} value={d} />
+                  ))
+                }
+        </Picker>
+
+            <Picker
+                selectedValue={formValues.mes}
+                style={styles.pickerStyle}
+                onValueChange={(itemValue)=> handleInputChanges("mes", parseInt(itemValue)) }
+                >
+            {
+                months.map((m, i) => (
+                    <Picker.Item key={m} label={m} value={parseInt(i)} />
+                    ))
+                }
+            </Picker>
+            
+      <Picker
+          selectedValue={formValues.anio}
+          style={styles.pickerStyle}
+          onValueChange={(itemValue)=> handleInputChanges("anio", itemValue) }
+          >
+          {
+              [2022, 2023, 2024, 2025, 2026].map((y, i) => (
+                  <Picker.Item key={y} label={y} value={y} />
+                  ))
+                }
+        </Picker>
+        </View>
+
+            <View style={{display:'flex', flexDirection:'row', width:340, marginTop:15}}>
+                <View style={{display:'flex', flexDirection:'row',alignItems:'center'  }}>
+                    <RadioButton
+                        value="Gasto"
+                        status={formValues.tipo === "Gasto" ? 'checked' : 'unchecked'}
+                        onPress={() => handleInputChanges("tipo", "Gasto")}
+                        />
+                    <Text > Gasto </Text>
+                </View>
+
+                <View style={{display:'flex', flexDirection:'row', marginLeft:10, alignItems:'center' }}>
+                    <RadioButton
+                        value="Ingreso"
+                        status={formValues.tipo === "Ingreso" ? 'checked' : 'unchecked'}
+                        onPress={() => handleInputChanges("tipo", "Ingreso")}
+                        />
+                    <Text > Ingreso </Text>
+                </View>
             </View>
 
             {
@@ -96,6 +170,7 @@ const AddTransaction = () => {
                     
                     <Picker
                         selectedValue={formValues.tipo_gasto}
+                        style={{width:340, height:30, marginTop:15}}
                         onValueChange={(itemValue)  => handleInputChanges("tipo_gasto", parseInt(itemValue))
                     }>
                         <Picker.Item label="Gastos Personales" value={1} />
@@ -112,6 +187,7 @@ const AddTransaction = () => {
 
                     <Picker
                         selectedValue={formValues.tipo_ingreso}
+                        style={{width:340, height:30, marginTop:15}}
                         onValueChange={(itemValue)  => handleInputChanges("tipo_ingreso", parseInt(itemValue))
                     }>
                         <Picker.Item label="Ingresos por Salario" value={1} />
@@ -136,15 +212,19 @@ const AddTransaction = () => {
             {
                 ((formValues.tipo === "Ingreso" && formValues.tipo_ingreso === 3) || (formValues.tipo === "Gasto" && formValues.tipo_gasto === 4))
                     &&
-                    <Picker
-                        selectedValue={formValues.prestamo}
-                        onValueChange={(itemValue)  => handleInputChanges("prestamo", itemValue)
-                    }>
-                    {activeLoans.map(loan => (
-                        <Picker.Item key={loan.id} label={`${loan.persona} => ${loan.balance}`} value={loan.id} />    
-                    ))
-                    }
-                </Picker>
+                    <>
+                        <Text style={{marginTop:15, fontSize:15}}>Seleccione un Prestamo</Text>
+                        <Picker
+                            selectedValue={formValues.prestamo}
+                            style={{width:340, height:30, marginTop:10}}
+                            onValueChange={(itemValue)  => handleInputChanges("prestamo", itemValue)
+                        }>
+                        {activeLoans.map(loan => (
+                            <Picker.Item key={loan.id} label={`${loan.persona} => ${loan.balance}`} value={loan.id} />    
+                            ))
+                        }
+                    </Picker>
+                </>
             }
  
                   <TouchableWithoutFeedback style={styles.button} onPress={onSubmitData}>
@@ -193,5 +273,12 @@ const styles = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         marginTop: 15
-    }
+    },
+    pickerStyle:{  
+        height: 30,  
+        width: 110,  
+        color: '#344953',  
+        justifyContent: 'center',  
+        marginLeft:10
+    } 
 })

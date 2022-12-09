@@ -3,12 +3,15 @@ import { addDoc,
     setDoc,
     getDocs, 
     query, 
-    where, } from 'firebase/firestore';
+    where,
+    updateDoc,
+    doc,
+    getDoc, } from 'firebase/firestore';
 
     import { db } from './Firebase.config'
 
 
-export const addFinancialTransaction = async (data, email, newLoan, LoanPayment) => {
+export const addFinancialTransaction = async (data, email, newLoan, loanPayment) => {
 
     let prestamoId = "";
 
@@ -20,7 +23,8 @@ export const addFinancialTransaction = async (data, email, newLoan, LoanPayment)
             persona: data.persona,
             prestador: data.tipo === "Gasto" && data.tipo_gasto === 3,
             fecha: data.fecha,
-            mes: data.mes,
+            dia: data.dia,
+            mes: data.mes + 1,
             anio: data.anio,
             email
         }
@@ -28,11 +32,16 @@ export const addFinancialTransaction = async (data, email, newLoan, LoanPayment)
        prestamoId = await addNewLoan(loanToAdd)
     }
 
+    if(loanPayment){
+        await addLoadPayment(data.prestamo, data.monto)
+    }
+
     const transactionToAdd = {
         descripcion : data.descripcion,
         fecha: data.fecha,
         monto: parseFloat(data.monto),
-        mes: data.mes,
+        dia: data.dia,
+        mes: data.mes + 1,
         anio: data.anio,
         email,
         prestamo: prestamoId,
@@ -66,8 +75,16 @@ const addNewLoan = async (data) => {
     }
 }
 
-const addLoadPayment = (data) => {
+const addLoadPayment = async (loanId, amountPaid) => {
+    
+    const refLoan = doc(db, "Prestamos", loanId)
+    const loanSnap = await getDoc(refLoan)
 
+    console.log(refLoan)
+
+     await updateDoc(refLoan, {
+        balance : loanSnap.data().balance - amountPaid
+    })
 }
 
 export const getActiveLoans = async (email) => {

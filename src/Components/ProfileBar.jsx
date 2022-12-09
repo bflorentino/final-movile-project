@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { Image, Text, TouchableHighlight, View } from 'react-native'
 import { authContext } from '../../Context/authContext'
 import user from '../../assets/user.png'
+import logout from '../../assets/logout.png'
 import { logoutFirebase } from '../firebase/Firebase-auth'
 import { types } from '../../Context/authReducer'
 
@@ -29,9 +30,7 @@ const ProfileBar = () => {
                 <Image source={auth.photoURL || user } style={{width:40, height:40, borderRadius:15,marginLeft:5}} />
         
                 <TouchableHighlight onPress={onLogout} style={{marginLeft: 20}} >
-                    <Text style={{color:'#fff'}}>
-                        Logout
-                    </Text>
+                    <Image source={logout} style={{width:35, height:35}} />
                 </TouchableHighlight>
             </>
         }

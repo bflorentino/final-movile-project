@@ -4,15 +4,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import Register from './Screens/Register';
 import AddTransaction from './Screens/AddTransaction';
 import Login from './Screens/Login';
-import Home from './Screens/Home';
 import ViewTransactions from './Screens/ViewTransactions';
 import { useContext } from 'react';
 import { authContext } from '../Context/authContext';
-import { TouchableHighlight } from 'react-native';
 import { logoutFirebase } from './firebase/Firebase-auth';
 import { types } from '../Context/authReducer';
-import ProfileBar from './Components/profileBar';
-import { StatusBar } from 'expo-status-bar';
+
+import registroTrans from '../assets/registroTrans.png'
+import TransView from '../assets/TransView.png'
+
+import { Image } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,16 +35,35 @@ const Tabs = () => {
                 auth.uid 
                 ?
                 <>
-
                     <Tab.Navigator screenOptions={{ headerShown: false }} >                    
-                        <Tab.Screen name="Transaction" component={AddTransaction} />
-                        <Tab.Screen name="ViewTransactions" component={ViewTransactions} />
+                        <Tab.Screen 
+                            name="Transaction" 
+                            component={AddTransaction} 
+                            options={{title:"Nueva Transacción", tabBarIcon:({}) =>(
+                                <Image source={registroTrans} style={{height:25, width:25}} />
+                            )}}    
+                        />
+                        <Tab.Screen 
+                            name="ViewTransactions" 
+                            component={ViewTransactions}
+                            options={{title:"Tus Transacciónes", tabBarIcon:({}) => (
+                                <Image source={TransView} style={{height:25, width:25}}  />
+                            )}}
+                         />
                     </Tab.Navigator>
                 </>
                 :
                     <Tab.Navigator screenOptions={{ headerShown: false }}>
-                        <Tab.Screen name="Login" component={Login} />
-                        <Tab.Screen name="Registro" component={Register} />
+                        <Tab.Screen  
+                            name="Login" 
+                            component={Login} 
+                            options={{title:"Iniciar Sesión"}}
+                        />
+                        <Tab.Screen 
+                            name="Registro" 
+                            component={Register}
+                            options={{title:"Nueva Cuenta"}}
+                        />
                     </Tab.Navigator>
             }
             

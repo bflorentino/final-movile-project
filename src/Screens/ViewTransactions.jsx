@@ -59,10 +59,10 @@ export default function ViewTransactions() {
     <View style={{padding:10, width:"100%"}}>
       <Text style={{fontSize:25, fontWeight:'bold'}}>Transacciones Registradas</Text>
 
-      <View style={{display:'flex', flexDirection:'row', marginTop:10}}>
+      <View style={{display:'flex', flexDirection:'row', marginTop:10, marginLeft:10}}>
       <Picker
           selectedValue={month}
-          onValueChange={(itemValue)=> setMonth(itemValue) }
+          onValueChange={(itemValue)=> setMonth(parseInt(itemValue)) }
           >
           {
             months.map((m, i) => (
@@ -97,12 +97,16 @@ export default function ViewTransactions() {
       {
         filteredTransaction.length > 0 ?
 
-          <FlatList 
-            data={filteredTransaction}
-            itemSeparatorComponent={() => <View> </View>}
-            renderItem={({ item }) => <TransactionItem transaction={item} />}
-          >
-          </FlatList>    
+        <>
+
+          <Text style={{fontWeight:'bold', fontSize:17, marginTop:10}}>Tus transacciones del Mes {month} del Año {year}</Text>
+            <FlatList 
+              data={filteredTransaction}
+              itemSeparatorComponent={() => <View> </View>}
+              renderItem={({ item }) => <TransactionItem transaction={item} />}
+              >
+            </FlatList>    
+          </>
         :
          <Text style={{textAlign:'center', fontSize:16, marginTop:20}}>No hay transacciones encontradas para este mes</Text>
       }
@@ -127,8 +131,8 @@ const styles = StyleSheet.create({
   },
 
   pickerStyle:{  
-    height: 20,  
-    width: "80%",  
+    height: 30,  
+    width: "70%",  
     color: '#344953',  
     justifyContent: 'center',  
     marginLeft:10
