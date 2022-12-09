@@ -27,7 +27,10 @@ const Login = () => {
         dispatch({type: types.LOGIN , payload: {...data}})
         navigation.navigate("Home")
       }
-    })
+    }).catch(e => {
+      console.log(e)
+      Alert.alert(e)
+  })
   }
 
 

@@ -15,6 +15,7 @@ const Tabs = () => {
                <Tab.Screen name="Login" component={Login} />
                <Tab.Screen name="Registro" component={Register} />
                <Tab.Screen name="Home" component={Home} />
+               <Tab.Screen name="Transaction" component={AddTransaction} />
            </Tab.Navigator>
         </NavigationContainer>
     )

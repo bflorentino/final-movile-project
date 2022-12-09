@@ -51,8 +51,14 @@ const Register = () => {
                 .then(res => {
                     Alert.alert("Se ha registrado exitosamente")
                     navigation.navigate("Home")
+                }).catch(e => {
+                    console.log(e)
                 })
+            }).catch(e => {
+                console.log(e)
             })
+        }).catch(e => {
+            console.log(e)
         })
     }
 

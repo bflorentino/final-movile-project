@@ -1,7 +1,7 @@
 import Navigation from './src/Navigation';
 import { useReducer } from 'react';
 import { authContext } from './Context/authContext';
-import { authentication} from './context/authReducer';
+import { authentication} from './Context/authReducer';
 
 
 export default function App() {
@@ -15,12 +15,3 @@ export default function App() {
   
   );
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: '#fff',
-//     alignItems: 'center',
-//     justifyContent: 'center',
-//   },
-// });
