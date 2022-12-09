@@ -1,14 +1,12 @@
 import {createUserWithEmailAndPassword,
-        updateProfile, signInWithEmailAndPassword
+        updateProfile, signInWithEmailAndPassword,
+        signOut
     } from 'firebase/auth'
 
 import { auth, db, storage } from './Firebase.config'
 
 import { addDoc, 
-    collection, 
-    getDocs, 
-    query, 
-    where } from 'firebase/firestore';
+    collection, } from 'firebase/firestore';
 
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
@@ -89,3 +87,7 @@ export const login = async (email, password) => {
         return false;
     }
 }
+
+export const logoutFirebase = async () => {
+    await signOut(auth)
+ }

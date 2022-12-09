@@ -1,4 +1,4 @@
-export const types =  {
+    export const types =  {
     LOGIN: 'authentication-login',
     LOGOUT: 'authentication-logout',
 }

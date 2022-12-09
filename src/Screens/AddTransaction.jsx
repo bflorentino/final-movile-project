@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { TextInput, StyleSheet, Text, View, Modal } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import { RadioButton } from 'react-native-paper';
 import {Picker} from '@react-native-picker/picker';
 import { useForm } from '../hooks/useForm';
@@ -18,7 +17,9 @@ const AddTransaction = () => {
         {
             descripcion: "",
             monto: 0,
-            fecha: new Date(),
+            fecha: new Date().toLocaleString(),
+            mes:   new Date().getMonth() + 1,
+            anio:  new Date().getFullYear(),
             tipo: "Gasto",
             tipo_gasto: 1,
             tipo_ingreso: 1,
@@ -148,7 +149,7 @@ const AddTransaction = () => {
  
                   <TouchableWithoutFeedback style={styles.button} onPress={onSubmitData}>
                     <Text style={styles.textButton}>
-                        Registrarme
+                        Registrar Transacción
                     </Text>
                 </TouchableWithoutFeedback>
 
@@ -183,7 +184,7 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     textButton: {
-        backgroundColor:'#20232A',
+        backgroundColor:'#159',
         color: '#fff',
         paddingVertical:8,
         borderRadius:10,

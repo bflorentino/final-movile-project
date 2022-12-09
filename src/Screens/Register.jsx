@@ -50,7 +50,7 @@ const Register = () => {
                 addLeftDataFromUser({...formValues, url})
                 .then(res => {
                     Alert.alert("Se ha registrado exitosamente")
-                    navigation.navigate("Home")
+                    navigation.navigate("ViewTransaction")
                 }).catch(e => {
                     console.log(e)
                 })
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     textButton: {
-        backgroundColor:'#20232A',
+        backgroundColor:'#159',
         color: '#fff',
         paddingVertical:8,
         borderRadius:10,

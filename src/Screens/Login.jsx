@@ -25,7 +25,7 @@ const Login = () => {
       if(data !== false){
         Alert.alert("Bienvenido")
         dispatch({type: types.LOGIN , payload: {...data}})
-        navigation.navigate("Home")
+        navigation.navigate("ViewTransaction")
       }
     }).catch(e => {
       console.log(e)
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         justifyContent:'center'
     },
     textButton: {
-        backgroundColor:'#20232A',
+        backgroundColor:'#159',
         color: '#fff',
         paddingVertical:8,
         borderRadius:10,

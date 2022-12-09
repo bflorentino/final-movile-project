@@ -15,11 +15,13 @@ export const addFinancialTransaction = async (data, email, newLoan, LoanPayment)
     if(newLoan){
 
         const loanToAdd = {
-            balance: parseInt(data.monto), 
-            monto: parseInt(data.monto),
+            balance: parseFloat(data.monto), 
+            monto: parseFloat(data.monto),
             persona: data.persona,
             prestador: data.tipo === "Gasto" && data.tipo_gasto === 3,
             fecha: data.fecha,
+            mes: data.mes,
+            anio: data.anio,
             email
         }
 
@@ -29,7 +31,9 @@ export const addFinancialTransaction = async (data, email, newLoan, LoanPayment)
     const transactionToAdd = {
         descripcion : data.descripcion,
         fecha: data.fecha,
-        monto: data.monto,
+        monto: parseFloat(data.monto),
+        mes: data.mes,
+        anio: data.anio,
         email,
         prestamo: prestamoId,
     }
